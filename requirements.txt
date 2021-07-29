@@ -1,0 +1,4 @@
+cuid
+requests
+pydantic
+factory-boy
