@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import Optional, Protocol, TypedDict, Any
+from typing import Optional, Protocol, TypedDict, Dict, Any
 from urllib.parse import urljoin
 from xml.etree import ElementTree as ET
 
@@ -32,7 +32,7 @@ class Lead(BaseModel):
     fecha: Optional[Any] = None
     marca: Optional[str] = None
     modelo: Optional[str] = None
-    extra: dict[str, Any] = {}
+    extra: Dict[str, Any] = {}
 
     def to_xml(self) -> bytes:
         root = ET.Element('root')
