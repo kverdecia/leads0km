@@ -4,6 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+leads0km = {editable = true, path = "."}
 
 [requires]
 python_version = "3.9"
@@ -18,7 +19,3 @@ Sphinx = "==1.8.5"
 twine = "==1.14.0"
 mypy = "*"
 types-requests = "*"
-
-[dev-packages.e1839a8]
-path = "."
-editable = true

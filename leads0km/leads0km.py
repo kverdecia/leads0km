@@ -32,6 +32,7 @@ class Lead(BaseModel):
     fecha: Optional[Any] = None
     marca: Optional[str] = None
     modelo: Optional[str] = None
+    vendedor: Optional[str] = None
     extra: Dict[str, Any] = {}
 
     def to_xml(self) -> bytes:
