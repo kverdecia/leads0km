@@ -16,6 +16,7 @@ class LeadFactory(factory.Factory):
     mensaje = factory.fuzzy.FuzzyText()
     marca = factory.fuzzy.FuzzyText()
     modelo = factory.fuzzy.FuzzyText()
+    vendedor = factory.fuzzy.FuzzyText()
     extra = factory.LazyAttribute(lambda obj: {cuid.cuid(): cuid.cuid(),
         cuid.cuid(): cuid.cuid()})
 

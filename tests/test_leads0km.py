@@ -26,7 +26,7 @@ class TestLead(unittest.TestCase):
         self.assertEqual(prospects_node.tag, 'prospectos')
         self.assertEqual(len(prospects_node), 1)
         list_item_node = prospects_node[0]
-        self.assertEqual(len(list_item_node), 10)
+        self.assertEqual(len(list_item_node), 11)
         self.assertEqual(list_item_node.tag, 'list-item')
         self.assertEqual(list_item_node[0].tag, 'source')
         self.assertEqual(list_item_node[0].text, lead.source)
@@ -46,7 +46,9 @@ class TestLead(unittest.TestCase):
         self.assertEqual(list_item_node[7].text, lead.marca)
         self.assertEqual(list_item_node[8].tag, 'modelo')
         self.assertEqual(list_item_node[8].text, lead.modelo)
-        extra_node = list_item_node[9]
+        self.assertEqual(list_item_node[9].tag, 'vendedor')
+        self.assertEqual(list_item_node[9].text, lead.vendedor)
+        extra_node = list_item_node[10]
         self.assertEqual(extra_node.tag, 'extra')
         self.assertEqual(len(extra_node), 2)
         key1, key2 = lead.extra.keys()
