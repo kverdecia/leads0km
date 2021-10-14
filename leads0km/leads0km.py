@@ -21,6 +21,65 @@ class Logger(Protocol):
         ...
 
 
+class LeadProtocol(Protocol):
+    campania: str
+    source: Optional[str] = None
+    nombre: Optional[str] = None
+    telefono: Optional[str] = None
+    email: Optional[str] = None
+    provincia: Optional[str] = None
+    mensaje: Optional[str] = None
+    fecha: Optional[Any] = None
+    marca: Optional[str] = None
+    modelo: Optional[str] = None
+    vendedor: Optional[str] = None
+
+    def to_xml(self) -> bytes:
+        ...
+
+    def json(self) -> str:
+        ...
+
+
+class FlatLead(BaseModel):
+    campania: str
+    source: Optional[str] = None
+    nombre: Optional[str] = None
+    telefono: Optional[str] = None
+    email: Optional[str] = None
+    provincia: Optional[str] = None
+    mensaje: Optional[str] = None
+    fecha: Optional[Any] = None
+    marca: Optional[str] = None
+    modelo: Optional[str] = None
+    vendedor: Optional[str] = None
+
+    class Config:
+        extra = 'allow'
+
+    def to_xml(self) -> bytes:
+        root = ET.Element('root')
+        campaign = ET.Element('campania')
+        campaign.text = self.campania
+        root.append(campaign)
+
+        prospects = ET.Element('prospectos')
+        root.append(prospects)
+        list_item = ET.Element('list-item')
+        prospects.append(list_item)
+
+        for field_name, field_value in self.__dict__.items():
+            if field_name not in ['campania', 'extra'] and field_value is not None:
+                try:
+                    element = ET.Element(field_name)
+                    element.text = field_value
+                    list_item.append(element)
+                except ValueError:
+                    pass
+
+        return ET.tostring(root, encoding='utf-8')
+
+
 class Lead(BaseModel):
     campania: str
     source: Optional[str] = None
@@ -91,7 +150,7 @@ class LeadsService:
             'Content-Type': 'application/xml',
         }
 
-    def send(self, campaign: str, lead: Lead, lead_type: Optional[str] = None) -> LogMessage:
+    def send(self, campaign: str, lead: LeadProtocol, lead_type: Optional[str] = None) -> LogMessage:
         url = urljoin(self.endpoint, 'prospectos/add/')
         xml = lead.to_xml()
         response = requests.post(url, headers=self.headers, data=xml)
