@@ -2,7 +2,7 @@
 
 """The setup script."""
 from __future__ import annotations
-import os
+import os, re
 
 from setuptools import setup, find_packages
 
@@ -15,6 +15,20 @@ with open('HISTORY.rst') as history_file:
 requirements = open('requirements.txt').readlines()
 
 test_requirements = open('requirements_test.txt').readlines()
+
+
+def get_version(*file_paths):
+    """Retrieves the version from formdefinitions/__init__.py"""
+    filename = os.path.join(os.path.dirname(__file__), *file_paths)
+    version_file = open(filename).read()
+    version_match = re.search(r"^__version__ = ['\"]([^'\"]*)['\"]",
+                              version_file, re.M)
+    if version_match:
+        return version_match.group(1)
+    raise RuntimeError('Unable to find version string.')
+
+
+version = get_version("leads0km", "__init__.py")
 
 setup(
     author="Karel Antonio Verdecia Ortiz",
@@ -40,6 +54,6 @@ setup(
     test_suite='tests',
     tests_require=test_requirements,
     url='https://github.com/kverdecia/leads0km',
-    version='0.1.1',
+    version=version,
     zip_safe=False,
 )
